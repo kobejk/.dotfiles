@@ -17,7 +17,7 @@ For example, the configuration for `nvim` is located in `~/.config/nvim`. Theref
 the `~/.dotfiles/nvim` folder, that same structure should be replicated `.dotfiles/nvim/.config/nvim/*`.
 
 ```bash
-nvim
+.dotfiles/nvim
 └── .config
     └── nvim
         ├── init.lua
