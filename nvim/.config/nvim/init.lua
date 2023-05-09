@@ -112,11 +112,23 @@ require('lazy').setup({
     },
   },
 
-  { -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
+  -- uncomment/comment for Atom theme
+  -- { -- Theme inspired by Atom
+  --   'navarasu/onedark.nvim',
+  --   priority = 1000,
+  --   config = function()
+  --     vim.cmd.colorscheme 'onedark'
+  --   end,
+  -- },
+
+  -- install nightfox theme, uncomment/comment for nightfox theme
+  -- options nightfox, dayfox, dawnfox, duskfox, nordfox, terafox, carbonfox
+  -- https://github.com/EdenEast/nightfox.nvim
+  {
+    'EdenEast/nightfox.nvim',
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'onedark'
+      vim.cmd.colorscheme 'terafox'
     end,
   },
 
@@ -125,8 +137,8 @@ require('lazy').setup({
     -- See `:help lualine.txt`
     opts = {
       options = {
-        icons_enabled = false,
-        theme = 'onedark',
+        icons_enabled = true,
+        theme = 'auto',
         component_separators = '|',
         section_separators = '',
       },
@@ -176,6 +188,8 @@ require('lazy').setup({
   -- require 'kickstart.plugins.autoformat',
   -- require 'kickstart.plugins.debug',
 
+  { 'ThePrimeagen/harpoon' }
+
   -- NOTE: The import below automatically adds your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
   --    up-to-date with whatever is in the kickstart repo.
@@ -184,17 +198,36 @@ require('lazy').setup({
   --
   --    An additional note is that if you only copied in the `init.lua`, you can just comment this line
   --    to get rid of the warning telling you that there are not plugins in `lua/custom/plugins/`.
-  { import = 'custom.plugins' },
+  -- { import = 'custom.plugins' },
 }, {})
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
 
--- Set highlight on search
-vim.o.hlsearch = false
+-- number the lines
+vim.opt.nu = true
+vim.opt.relativenumber = true
 
--- Make line numbers default
-vim.wo.number = true
+-- split windows in a certain direction
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+
+-- unhighlight search results after exiting search
+vim.opt.hlsearch = false
+
+-- progressively highlight search results while searching
+vim.opt.incsearch = true
+
+-- keep at least 8 lines at the bottom of the screen at all times
+vim.opt.scrolloff = 8
+vim.opt.signcolumn = "yes"
+vim.opt.isfname:append("@-@")
+
+-- use 4 space indenting instead of the default 8
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
@@ -202,7 +235,7 @@ vim.o.mouse = 'a'
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.o.clipboard = 'unnamedplus'
+-- vim.o.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -230,6 +263,34 @@ vim.o.termguicolors = true
 
 -- [[ Basic Keymaps ]]
 
+-- navigate back to file explorer
+vim.keymap.set("n", "<leader>e", vim.cmd.Ex)
+
+-- move lines up and down when highlighted using J and K
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
+-- appened current line to the line above you while keeping the cursor in the same position 
+vim.keymap.set("n", "J", "mzJ`z")
+
+-- ctrl + d and ctrl + u keep the cursor centered in the middle of the screen
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+
+-- makes ctrl + c and esc the same
+vim.keymap.set("i", "<C-c>", "<Esc>")
+
+-- Q does nothing now
+vim.keymap.set("n", "Q", "<nop>")
+
+-- delete character, but don't copy into register
+-- vim.keymap.set("n", "x", "_x")
+
+-- split windows
+vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = '[S]plit [V]ertically' }) -- vertically
+-- vim.keymap.set("n", "<leader>sh", "<C-w>sv", { desc = '[S]plit [H]orizontally' }) -- horizontally, need to figure out new keymap
+-- clashes with search help
+
+
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
@@ -248,6 +309,25 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
+-- [[ Congigure Harpoon ]]
+-- mark adds file to harpoon
+local mark = require("harpoon.mark")
+
+-- ui shows a small ui with all marked/harpooned files
+local ui = require("harpoon.ui")
+
+-- add file to harpoon
+vim.keymap.set("n", "<leader>a", mark.add_file)
+
+-- open harpoon menu
+vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
+
+-- switch quickly between each marked/harpooned files
+vim.keymap.set("n", "<C-h>", function() ui.nav_file(1) end)
+vim.keymap.set("n", "<C-t>", function() ui.nav_file(2) end)
+vim.keymap.set("n", "<C-n>", function() ui.nav_file(3) end)
+vim.keymap.set("n", "<C-s>", function() ui.nav_file(4) end)
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
@@ -493,3 +573,4 @@ cmp.setup {
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
