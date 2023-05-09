@@ -238,6 +238,14 @@ vim.o.mouse = 'a'
 --  See `:help 'clipboard'`
 -- vim.o.clipboard = 'unnamedplus'
 
+-- copy to clipboard on wsl, comment this section out of in linux/mac
+vim.cmd [[
+  augroup Yank
+  autocmd!
+  autocmd TextYankPost * :call system('/mnt/c/windows/system32/clip.exe ',@")
+  augroup END
+]]
+
 -- Enable break indent
 vim.o.breakindent = true
 
@@ -265,7 +273,7 @@ vim.o.termguicolors = true
 -- [[ Basic Keymaps ]]
 
 -- navigate back to file explorer
-vim.keymap.set("n", "<leader>e", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>e", vim.cmd.Ex, { desc= "[E]xplorer" })
 
 -- move lines up and down when highlighted using J and K
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
@@ -319,10 +327,10 @@ local mark = require("harpoon.mark")
 local ui = require("harpoon.ui")
 
 -- add file to harpoon
-vim.keymap.set("n", "<leader>a", mark.add_file)
+vim.keymap.set("n", "<leader>h", mark.add_file, { desc = "[H]arpoon file" })
 
 -- open harpoon menu
-vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
+vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu, { desc = "Open Harpoon Menu" })
 
 -- switch quickly between each marked/harpooned files
 vim.keymap.set("n", "<C-h>", function() ui.nav_file(1) end)
