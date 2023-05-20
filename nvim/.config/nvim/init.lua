@@ -91,10 +91,21 @@ require('lazy').setup({
     },
   },
 
+  -- formatting and linting
+  -- { 'jose-elias-alvarez/null-ls.nvim' },
+
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
   },
+
+  -- Autopair tags in HTML and other languages
+  -- https://github.com/windwp/nvim-autopairs
+  { 'windwp/nvim-autopairs' },
+
+  -- Use treesitter to autoclose and autorename HTML tags
+  -- https://github.com/windwp/nvim-ts-autotag
+  { 'windwp/nvim-ts-autotag' },
 
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim', opts = {} },
@@ -112,25 +123,25 @@ require('lazy').setup({
     },
   },
 
-  -- uncomment/comment for Atom theme
-  -- { -- Theme inspired by Atom
-  --   'navarasu/onedark.nvim',
-  --   priority = 1000,
-  --   config = function()
-  --     vim.cmd.colorscheme 'onedark'
-  --   end,
-  -- },
-
-  -- install nightfox theme, uncomment/comment for nightfox theme
-  -- options nightfox, dayfox, dawnfox, duskfox, nordfox, terafox, carbonfox
-  -- https://github.com/EdenEast/nightfox.nvim
-  {
-    'EdenEast/nightfox.nvim',
+  -- comment/uncomment for Atom theme
+  { -- Theme inspired by Atom
+    'navarasu/onedark.nvim',
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'terafox'
+      vim.cmd.colorscheme 'onedark'
     end,
   },
+
+  -- install nightfox theme, comment/uncomment to use/disable
+  -- options nightfox, dayfox, dawnfox, duskfox, nordfox, terafox, carbonfox
+  -- https://github.com/EdenEast/nightfox.nvim
+  -- {
+  --   'EdenEast/nightfox.nvim',
+  --   priority = 1000,
+  --   config = function()
+  --     vim.cmd.colorscheme 'terafox'
+  --   end,
+  -- },
 
   { -- Set lualine as statusline
     -- make sure a nerdfont is installed
@@ -355,6 +366,13 @@ vim.keymap.set("n", "<C-h>", function() ui.nav_file(1) end)
 vim.keymap.set("n", "<C-t>", function() ui.nav_file(2) end)
 vim.keymap.set("n", "<C-n>", function() ui.nav_file(3) end)
 vim.keymap.set("n", "<C-s>", function() ui.nav_file(4) end)
+
+-- [[ Configure Autotags ]]
+require('nvim-autopairs').setup {
+  disable_filetype = { 'TelescopePrompt', 'vim' }
+}
+
+require('nvim-ts-autotag').setup {}
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
