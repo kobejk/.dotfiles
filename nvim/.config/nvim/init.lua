@@ -133,6 +133,7 @@ require('lazy').setup({
   },
 
   { -- Set lualine as statusline
+    -- make sure a nerdfont is installed
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
     opts = {
@@ -238,13 +239,30 @@ vim.o.mouse = 'a'
 --  See `:help 'clipboard'`
 -- vim.o.clipboard = 'unnamedplus'
 
--- copy to clipboard on wsl, comment this section out of in linux/mac
-vim.cmd [[
+-- check which OS we are on, and sync keyboard between vim and OS
+-- credit devaslife dotfiles (https://github.com/craftzdog/dotfiles-public)
+local has = vim.fn.has
+local is_mac = has "macunix"
+local is_win = has "win32"
+local is_wsl = has "wsl"
+
+if is_mac == 1 then
+  vim.opt.clipboard:append { 'unnamedplus' }
+end
+
+if is_win == 1 then
+  vim.opt.clipboard:prepend { 'unnamed', 'unnamedplus' }
+end
+
+if is_wsl == 1 then
+  vim.cmd [[
   augroup Yank
   autocmd!
   autocmd TextYankPost * :call system('/mnt/c/windows/system32/clip.exe ',@")
   augroup END
 ]]
+end
+
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -376,7 +394,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim', 'javascript' },
+  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim', 'javascript', 'query' },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
