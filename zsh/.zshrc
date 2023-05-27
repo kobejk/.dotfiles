@@ -70,7 +70,14 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(git zsh-syntax-highlighting zsh-autosuggestions vi-mode)
+
+#vi-mode settings
+# don't redraw terminal when switching modes
+VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=false
+
+# keep cursor style between modes
+VI_MODE_SET_CURSOR=false
 
 source $ZSH/oh-my-zsh.sh
 
