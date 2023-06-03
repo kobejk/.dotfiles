@@ -92,6 +92,18 @@ require("lazy").setup({
     },
   },
 
+  -- install and setup colour visualisation for tailwind
+  {
+    "NvChad/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup({
+        user_default_options = {
+          tailwind = true,
+        },
+      })
+    end,
+  },
+
   -- formatting and linting
   { "jose-elias-alvarez/null-ls.nvim" },
   { "jay-babu/mason-null-ls.nvim" },
@@ -99,7 +111,18 @@ require("lazy").setup({
   {
     -- Autocompletion
     "hrsh7th/nvim-cmp",
-    dependencies = { "hrsh7th/cmp-nvim-lsp", "L3MON4D3/LuaSnip", "saadparwaiz1/cmp_luasnip" },
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "L3MON4D3/LuaSnip",
+      "saadparwaiz1/cmp_luasnip",
+      "roobert/tailwindcss-colorizer-cmp.nvim",
+      config = true,
+    },
+    opts = function(_, opts)
+      opts.formatting = {
+        format = require("tailwindcss-colorizer-cmp").formatter,
+      }
+    end,
   },
 
   -- Autopair tags in HTML and other languages
@@ -601,8 +624,8 @@ local servers = {
   -- for typescript and javascript
   tsserver = {},
 
-  -- prettier for formatting
-  -- prettier = {},
+  -- tailwind support
+  tailwindcss = {},
 
   lua_ls = {
     Lua = {
