@@ -92,7 +92,8 @@ require('lazy').setup({
   },
 
   -- formatting and linting
-  -- { 'jose-elias-alvarez/null-ls.nvim' },
+  { 'jose-elias-alvarez/null-ls.nvim' },
+  { 'jay-babu/mason-null-ls.nvim' },
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -371,8 +372,40 @@ vim.keymap.set("n", "<C-s>", function() ui.nav_file(4) end)
 require('nvim-autopairs').setup {
   disable_filetype = { 'TelescopePrompt', 'vim' }
 }
-
 require('nvim-ts-autotag').setup {}
+
+-- [[Configure null-ls]]
+-- https://github.com/MunifTanjim/prettier.nvim (setup is taken from here)
+-- https://github.com/jose-elias-alvarez/null-ls.nvim
+local null_ls = require "null-ls"
+
+local formatting = null_ls.builtins.formatting
+local diagnostics = null_ls.builtins.diagnostics
+local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+
+null_ls.setup({
+  sources = {
+    formatting.prettier,
+    formatting.stylua,
+    diagnostics.eslint_d
+  },
+  -- format on save
+    on_attach = function(client, bufnr)
+        if client.supports_method("textDocument/formatting") then
+            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                group = augroup,
+                buffer = bufnr,
+                callback = function()
+                    -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+                    -- on later neovim version, you should use vim.lsp.buf.format({ async = false }) instead
+                vim.lsp.buf.format({ async = false})
+                    -- vim.lsp.buf.formatting_sync()
+                end,
+            })
+        end
+    end,
+})
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
@@ -542,6 +575,9 @@ local servers = {
   -- for typescript and javascript
   tsserver = {},
 
+  -- prettier for formatting
+  -- prettier = {},
+
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -573,6 +609,17 @@ mason_lspconfig.setup_handlers {
     }
   end,
 }
+
+-- [[Configure mason-null-ls]]
+local mason_null_ls = require 'mason-null-ls'
+
+mason_null_ls.setup({
+  ensure_installed = {
+    "prettier", -- javascript formatting
+    "stylua", -- lua formatting
+    "eslint_d", -- linting for javascript and typescript
+  }
+})
 
 -- nvim-cmp setup
 local cmp = require 'cmp'
