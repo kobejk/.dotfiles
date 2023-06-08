@@ -494,6 +494,7 @@ require("nvim-treesitter.configs").setup({
     "json",
     "css",
     "html",
+    "astro",
   },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
@@ -626,6 +627,9 @@ local servers = {
 
   -- tailwind support
   tailwindcss = {},
+
+  -- support for astro.js
+  astro = {},
 
   lua_ls = {
     Lua = {
