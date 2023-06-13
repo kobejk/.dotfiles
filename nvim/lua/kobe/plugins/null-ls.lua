@@ -3,9 +3,12 @@
 -- make sure these linters are formatters are installed
 require("mason-null-ls").setup({
 	ensure_installed = {
-		"prettier",
-		"stylua",
-		"eslint_d",
+		"prettier", -- javascript/typescript
+		"stylua", -- lua
+		"eslint_d", -- javascript / typescript
+		"ruff", -- python
+		"mypy", -- python
+		"black", -- python
 	},
 })
 
@@ -22,6 +25,9 @@ null_ls.setup({
 		formatting.prettier,
 		formatting.stylua,
 		diagnostics.eslint_d,
+		diagnostics.ruff,
+		diagnostics.mypy,
+		formatting.black,
 	},
 
 	-- format code on save

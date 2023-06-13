@@ -112,6 +112,9 @@ local plugins = {
 	{ "jose-elias-alvarez/null-ls.nvim" },
 	-- configure linters and formatters installed with mason
 	{ "jay-babu/mason-null-ls.nvim" },
+
+	-- indent guides even on blank lines
+	{ "lukas-reineke/indent-blankline.nvim" },
 }
 
 -- extra configuration, see https://github.com/folke/lazy.nvim#%EF%B8%8F-configuration

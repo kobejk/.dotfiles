@@ -89,3 +89,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	group = highlight_group,
 	pattern = "*",
 })
+
+-- create column in the middle of screen
+vim.opt.colorcolumn = "80"

@@ -5,7 +5,6 @@ local lsp = require("lsp-zero").preset({})
 -- make sure these servers are installed
 lsp.ensure_installed({
 	"tsserver",
-	"eslint",
 	"astro",
 	"tailwindcss",
 	"lua_ls",
@@ -31,7 +30,7 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 cmp_mappings["<Tab>"] = nil
 cmp_mappings["<S-Tab>"] = nil
 
--- configure icons
+-- disable sign icons and replace with letters
 lsp.setup_nvim_cmp({
 	mapping = cmp_mappings,
 })
@@ -49,6 +48,11 @@ lsp.set_preferences({
 -- default keymaps for LSP functionality
 lsp.on_attach(function(client, bufnr)
 	lsp.default_keymaps({ buffer = bufnr })
+
+	-- setup code actions keymap
+	vim.keymap.set("n", "<leader>ca", function()
+		vim.lsp.buf.code_action()
+	end, opts)
 end)
 
 lsp.setup()
