@@ -115,6 +115,9 @@ local plugins = {
 
 	-- indent guides even on blank lines
 	{ "lukas-reineke/indent-blankline.nvim" },
+
+	-- git intergation through neovim
+	{ "tpope/vim-fugitive" },
 }
 
 -- extra configuration, see https://github.com/folke/lazy.nvim#%EF%B8%8F-configuration
