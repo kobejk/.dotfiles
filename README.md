@@ -58,8 +58,14 @@ configuration file.
 Most functionality is the same, with one or two different plugins and remaps.
 
 ### Requirements
+
 - Neovim 0.9.0
 - Linux/MacOS/WSL (I don't run this configuration in a native Windows environment)
+- g++ (or similar c++ compiler)
+- python3.10-venv
+- python3-pip
+- ripgrep
+- fd find
 
 ### Backing up existing configuration
 
@@ -139,5 +145,3 @@ mkdir -p ~/.config/nvim
 cd ~/.config/nvim
 touch init.lua
 ```
-
-
